@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Notes App</string>
+    <string name="click_here_to_login">Already have an account Click here to Login!</string>
+    <string name="click_here_to_signup">Don\'t have an account Click here to Signup!</string>
+    <string name="add_note">Add Note</string>
+    <string name="title">Title</string>
+    <string name="description">Description</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+</resources>
