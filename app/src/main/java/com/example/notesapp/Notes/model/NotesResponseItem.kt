@@ -1,11 +1,11 @@
 package com.example.notesapp.Notes.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity("notes")
 data class NotesResponseItem(
-    val __v: Int,
-    val _id: String,
-    val createdAt: String,
-    val description: String,
+    @PrimaryKey val _id: String,
     val title: String,
-    val updatedAt: String,
-    val userId: String
+    val description: String,
 )

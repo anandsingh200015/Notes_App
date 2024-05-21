@@ -3,6 +3,7 @@ package com.example.notesapp.Notes.di
 import com.example.notesapp.Notes.Repo.NotesRepo
 import com.example.notesapp.Notes.api.AuthInterceptor
 import com.example.notesapp.Notes.api.NotesAPI
+import com.example.notesapp.Notes.db.NotesDb
 import com.example.notesapp.Token.TokenManager
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
@@ -35,8 +36,8 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun provideNotesRepo(authInterceptor: AuthInterceptor, service : NotesAPI) : NotesRepo{
-        return NotesRepo(authInterceptor,service)
+    fun provideNotesRepo(authInterceptor: AuthInterceptor, service : NotesAPI,room : NotesDb) : NotesRepo{
+        return NotesRepo(authInterceptor,service,room)
     }
 
     @Provides

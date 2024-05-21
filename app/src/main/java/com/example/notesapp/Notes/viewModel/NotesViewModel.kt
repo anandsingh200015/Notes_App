@@ -34,8 +34,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NotesViewModel @Inject constructor(val notesRepo: NotesRepo) : ViewModel() {
 
-    private val _notesState = MutableSharedFlow<List<NotesResponseItem>>()
-    val notesState = _notesState.asSharedFlow()
+    private val _notesState = MutableStateFlow<List<NotesResponseItem>>(emptyList())
+    val notesState = _notesState.asStateFlow()
 
     private var _isLoading = mutableStateOf(false)
     val isLoading : Boolean
@@ -43,6 +43,7 @@ class NotesViewModel @Inject constructor(val notesRepo: NotesRepo) : ViewModel()
 
     private val _notesRequestState = MutableSharedFlow<NotesResult>()
      val notesRequestState = _notesRequestState.asSharedFlow()
+
 
 
     init {
@@ -85,6 +86,18 @@ class NotesViewModel @Inject constructor(val notesRepo: NotesRepo) : ViewModel()
             getNotes()
         }
     }
+
+    fun updateNotesLocally(noteId: String, noteTitle: String, noteDescription: String){
+        viewModelScope.launch {
+            val updateNote = NotesResponseItem(noteId,noteTitle,noteDescription)
+            _notesState.value = _notesState.value.map {
+                if (it._id == noteId) updateNote
+                else it
+            }
+        }
+    }
+
+
 }
 
 

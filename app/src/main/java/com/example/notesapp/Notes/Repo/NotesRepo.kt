@@ -3,6 +3,8 @@ package com.example.notesapp.Notes.Repo
 import android.util.Log
 import com.example.notesapp.Notes.api.AuthInterceptor
 import com.example.notesapp.Notes.api.NotesAPI
+import com.example.notesapp.Notes.db.NoteDAO
+import com.example.notesapp.Notes.db.NotesDb
 import com.example.notesapp.Notes.model.NotesRequest
 import com.example.notesapp.Notes.model.NotesResult
 import okhttp3.OkHttpClient
@@ -15,11 +17,15 @@ interface INotesRepository {
     suspend fun saveNotes(notesRequest: NotesRequest): NotesResult
     suspend fun updateNote(noteId: String, notesRequest: NotesRequest): NotesResult
     suspend fun deleteNote(noteId: String): NotesResult
+
 }
 
 
-class NotesRepo @Inject constructor(val authInterceptor: AuthInterceptor, val service: NotesAPI) :
+class NotesRepo @Inject constructor(val authInterceptor: AuthInterceptor, val service: NotesAPI,
+    val room : NotesDb
+) :
     INotesRepository {
+
 
 
 //    fun getRetrofitBuilder(): Retrofit {
@@ -47,6 +53,7 @@ class NotesRepo @Inject constructor(val authInterceptor: AuthInterceptor, val se
             Log.d("NotesRepo", response.body().toString())
             if (response.isSuccessful) {
                 val notes = response.body() ?: emptyList()
+                room.noteDao().insertNote(notes)
                 NotesResult.Success(notes)
             } else {
                 val errorBody = response.errorBody()?.string() ?: "Error Saving Notes"
@@ -63,6 +70,7 @@ class NotesRepo @Inject constructor(val authInterceptor: AuthInterceptor, val se
         } catch (e: Exception) {
             NotesResult.Error(e.message.toString())
         }
+
     }
 
 
@@ -140,8 +148,8 @@ class NotesRepo @Inject constructor(val authInterceptor: AuthInterceptor, val se
             NotesResult.Error(e.message.toString())
         }
     }
-}
 
+}
 
 
 
